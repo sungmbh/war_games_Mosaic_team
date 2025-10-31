@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CES 2026 Deal Sprint - Staff Command Center</title>
+    <title>Operations Command Center - War games TTA</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            line-height: 1.4;
         }
 
         :root {
@@ -38,13 +39,12 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
             color: var(--text-primary);
-            line-height: 1.6;
             min-height: 100vh;
         }
 
-        /* [START: STATUS BAR - HIGH-IMPACT DESIGN] */
+        /* [START: STATUS BAR & HEADER FIX] */
         .status-bar {
-            background: linear-gradient(135deg, #102C48 0%, #082038 100%);
+            background: linear-gradient(135deg, #082038 0%, #102C48 100%);
             color: white;
             padding: 1.5rem 2rem;
             position: sticky;
@@ -59,6 +59,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .header-title-block {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .header-title-text {
+            font-size: 1.6rem;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .header-subtitle-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .staff-select-container {
@@ -79,11 +95,9 @@
             border-radius: 10px;
             font-size: 1rem;
             font-weight: 600;
-            cursor: pointer;
-            min-width: 200px;
             box-shadow: 0 0 0 5px rgba(255, 179, 0, 0.2);
         }
-        /* [END: STATUS BAR - HIGH-IMPACT DESIGN] */
+        /* [END: HIGH-IMPACT STATUS BAR & HEADER FIX] */
 
 
         /* Navigation Tabs */
@@ -93,35 +107,18 @@
             position: sticky;
             top: 98px;
             z-index: 999;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .nav-tabs-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            padding: 0 2rem;
         }
 
         .tab-button {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            padding: 1.25rem 1.5rem;
             font-size: 1rem;
             font-weight: 700;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            color: var(--text-secondary);
+            padding: 1.25rem 1.5rem;
             border-bottom: 3px solid transparent;
         }
 
         .tab-button.active {
             color: var(--primary);
-            border-bottom-color: var(--primary);
             box-shadow: inset 0 -4px 0 0 var(--primary);
         }
         
@@ -132,23 +129,15 @@
             padding: 2rem;
         }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
-        /* Card Base Styling */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 2rem;
             margin-bottom: 1.5rem;
-            transition: all 0.4s ease-out;
             box-shadow: var(--shadow-3d);
         }
 
@@ -183,13 +172,6 @@
             gap: 2rem;
             align-items: flex-start;
         }
-
-        .staff-grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
         .task-list-box {
             background: var(--bg-elevated);
             border-radius: 12px;
@@ -197,158 +179,272 @@
             border-left: 4px solid var(--primary);
             box-shadow: var(--shadow-sm);
         }
-
-        .task-list-box.warning { border-left-color: var(--warning); }
-        .task-list-box.accent { border-left-color: var(--accent); }
-        .task-list-box.success { border-left-color: var(--success); }
-
         .task-list-box strong {
             font-size: 1.2rem;
             display: block;
             margin-bottom: 1rem;
         }
 
-        .task-log-item {
-            font-family: 'Monaco', 'Courier New', monospace;
-            background: var(--bg-card);
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            white-space: nowrap;
-            overflow-x: auto;
-        }
-
-        .action-button {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 800;
+        /* [START: KYLE'S LOG SHEET DESIGN] */
+        .log-sheet-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: -1rem;
+            box-shadow: 0 4px 10px rgba(0, 102, 255, 0.3);
         }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .action-button.start { background: linear-gradient(45deg, var(--success), #00C853); }
-        .action-button.critical { background: linear-gradient(45deg, var(--accent), #D50000); }
-        .action-button.info { background: linear-gradient(45deg, var(--primary), var(--secondary)); }
-
-        .cash-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .cash-table th, .cash-table td {
-            padding: 0.75rem;
+        .log-entry {
+            display: grid;
+            grid-template-columns: 100px 1fr 120px;
+            padding: 0.75rem 1rem;
             border-bottom: 1px dashed var(--border-strong);
-            text-align: left;
+            align-items: center;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: var(--bg-card);
         }
-        .cash-table th {
-            background: var(--bg-elevated);
+        .log-time { font-weight: 700; color: var(--text-muted); }
+        .log-format-text strong { color: var(--success); }
+        .log-format-text .cost-log { color: var(--accent); }
+        /* [END: KYLE'S LOG SHEET DESIGN] */
+
+        /* [START: HIGH-VIZ AGENDA TABLE] */
+        .custom-agenda-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 1.5rem;
+        }
+        .custom-agenda-table th {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
             font-size: 0.9rem;
             text-transform: uppercase;
-        }
-        .cash-table td.cost { color: var(--accent); font-weight: 700; }
-        .cash-table td.payout { color: var(--success); font-weight: 700; }
-        .cash-table td.total { font-weight: 900; font-size: 1.1rem; }
-        
-        /* Schedule Table Icon Styling */
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            background: var(--bg-card);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-        }
-        .schedule-table th, .schedule-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        .schedule-table th {
-            background: var(--bg-elevated);
-            color: var(--primary);
             font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
+            text-align: left;
+            border: none;
+            position: sticky;
+            top: 0;
         }
-        .task-detail {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .custom-agenda-table thead tr th:first-child { border-top-left-radius: 10px; }
+        .custom-agenda-table thead tr th:last-child { border-top-right-radius: 10px; }
+        
+        .custom-agenda-table td {
+            background: var(--bg-card);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-strong);
+            font-size: 1rem;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .custom-agenda-table tbody tr:hover {
+            transform: scale(1.005);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .custom-agenda-table .time-col {
+            font-weight: 800;
+            width: 15%;
+            border-left: 4px solid var(--border-strong);
+        }
+        .custom-agenda-table .critical-event {
+            background: rgba(255, 61, 113, 0.15);
+            font-weight: 800;
+            border-left: 4px solid var(--accent);
+        }
+        .custom-agenda-table .task-col {
             font-weight: 600;
         }
-        .icon-small {
+        .custom-agenda-table .task-col strong {
+            color: var(--primary);
+        }
+        .custom-agenda-table .task-col .cash-note {
+            color: var(--success);
+            font-weight: 800;
+        }
+        /* [END: HIGH-VIZ AGENDA TABLE] */
+
+
+        /* [START: MENTOR ROOM MAP GRID FIX] */
+        .mentor-room-grid-container {
+            margin-top: 1.5rem;
+        }
+        .mentor-room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .room-card {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            border: 2px solid var(--border-strong);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .room-name {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        .mentor-name-role {
+            font-weight: 700;
+            color: var(--text-primary);
             font-size: 1.1rem;
         }
-        .critical-time {
-            color: var(--accent);
-            font-weight: 700;
+        /* [END: MENTOR ROOM MAP GRID FIX] */
+
+        /* [START: STAFF FLOW VIZ - FINAL FIX] */
+        .staff-flow-container {
+            padding: 2rem;
+            background: var(--bg-elevated);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            margin-top: 1.5rem;
         }
+        .flow-grid-viz {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .flow-role-card {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        .flow-role-icon {
+            font-size: 2.5rem;
+            padding: 1rem;
+            border-radius: 50%;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .flow-role-icon.kyle { background: var(--primary); }
+        .flow-role-icon.jade { background: var(--success); }
+        .flow-role-icon.mc { background: var(--warning); }
+        .flow-role-icon.wing { background: #9C27B0; }
+        .flow-arrow-connector {
+            font-size: 3rem;
+            color: var(--warning);
+            font-weight: 800;
+            line-height: 1;
+        }
+        .flow-hand-off-line {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        /* [END: STAFF FLOW VIZ - FINAL FIX] */
+
+
+        /* [START: JADE'S CRITICAL OPS CHECKLIST - FINAL] */
+        .cash-flow-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .cash-flow-table th {
+            background: linear-gradient(90deg, var(--success), #00C853);
+            color: white;
+            padding: 1rem 0.75rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-align: left;
+        }
+        .cash-flow-table td {
+            background: var(--bg-card);
+            padding: 0.75rem;
+            font-size: 1rem;
+            text-align: left;
+            border-left: 1px solid var(--border-strong);
+        }
+        .cash-flow-table .amount-col.cost { color: var(--accent); font-weight: 900; }
+        .cash-flow-table .amount-col.payout { color: var(--success); font-weight: 900; }
+        .cash-flow-table .flow-col { font-weight: 700; width: 15%; }
+        .cash-flow-table .flow-col.collection { color: var(--accent); }
+        .cash-flow-table .flow-col.payment { color: var(--success); }
+        
+        .ops-checklist-box {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(255, 179, 0, 0.1);
+        }
+        .ops-checklist-item {
+            padding: 1rem 0;
+            border-bottom: 1px dashed var(--border-strong);
+            margin-bottom: 0.5rem;
+        }
+        .ops-checklist-item strong {
+            font-size: 1.1rem;
+            color: var(--warning);
+            display: block;
+        }
+        .ops-checklist-item .action-detail {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            color: var(--text-primary);
+        }
+        /* [END: JADE'S CRITICAL OPS CHECKLIST - FINAL] */
+
 
         /* Responsive */
         @media (max-width: 1000px) {
             .staff-grid-2 { grid-template-columns: 1fr; }
-            .staff-grid-3 { grid-template-columns: 1fr; }
-            .staff-select-container { flex-direction: column; }
+            .flow-grid-viz { grid-template-columns: 1fr; gap: 1rem; }
+            .flow-arrow-connector { display: none; }
         }
         @media (max-width: 768px) {
-            .status-bar { padding: 1rem; }
-            .status-content { flex-direction: column; gap: 1rem; }
-            .staff-select-container { min-width: 100%; }
-            .staff-select-container select { min-width: 100%; }
-            .nav-tabs { top: 180px; }
-            .schedule-table thead { display: none; }
-            .schedule-table tr { display: block; margin-bottom: 1rem; border: 1px solid var(--border-strong); border-radius: 8px; box-shadow: var(--shadow-sm); }
-            .schedule-table td { display: block; text-align: right; border-bottom: none; position: relative; padding-left: 50%; }
-            .schedule-table td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 45%;
-                padding-left: 10px;
-                white-space: nowrap;
-                font-weight: 700;
-                text-align: left;
-                color: var(--primary);
-            }
+            .staff-grid-2 { grid-template-columns: 1fr; }
+            .custom-agenda-table th { display: none; }
+            .custom-agenda-table td { display: block; width: 100%; text-align: right; border-bottom: none; position: relative; padding-left: 50%; }
         }
     </style>
 </head>
 <body>
-    <!-- [START: STATUS BAR - HIGH-IMPACT DESIGN] -->
+    <!-- [START: STATUS BAR] -->
     <div class="status-bar">
         <div class="status-content">
+            <div class="header-title-block">
+                <div class="logo-icon" style="background: white; color: #102C48;">⚡</div>
+                <div>
+                    <div class="header-title-text" style="color: white;">Operations Command Center</div>
+                    <div class="header-subtitle-text">WAR GAMES TTA</div>
+                </div>
+            </div>
             <div class="staff-select-container">
                 <label for="staffRole">MY ROLE:</label>
                 <select id="staffRole" onchange="updateStaffView()">
                     <option value="kyle">Kyle - Scorekeeper / Tracker</option>
                     <option value="jade">Jade - Operations / Cash Master</option>
                     <option value="mc">MC (Volker H) - Logistics / Rules</option>
+                    <option value="wing">Wing - Media / Photography</option>
                 </select>
             </div>
-            
-            <div style="font-size: 1.5rem; font-weight: 900; color: white;">OPERATIONS COMMAND CENTER</div>
         </div>
     </div>
-    <!-- [END: STATUS BAR - HIGH-IMPACT DESIGN] -->
+    <!-- [END: STATUS BAR] -->
 
     <nav class="nav-tabs">
         <div class="nav-tabs-inner">
             <button class="tab-button active" id="btn-dashboard" onclick="showTab('dashboard', this)">🛠️ My Dashboard</button>
-            <button class="tab-button" id="btn-schedule" onclick="showTab('schedule', this)">📅 Master Schedule</button>
             <button class="tab-button" id="btn-flow" onclick="showTab('flow', this)">🔄 War Game Flow</button>
             <button class="tab-button" id="btn-logistics" onclick="showTab('logistics', this)">📞 Logistics & Contacts</button>
         </div>
@@ -356,149 +452,57 @@
 
     <main class="container">
 
-        <!-- Tab 1: Role-Specific Dashboard -->
+        <!-- Tab 1: Role-Specific Dashboard (Injected by JS) -->
         <div id="dashboard" class="tab-content active">
-            <!-- Content will be injected by JavaScript based on role selection -->
+            <!-- Initial content will be set by JS on load -->
         </div>
 
-        <!-- Tab 2: Master Schedule -->
-        <div id="schedule" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon" style="background: linear-gradient(135deg, var(--warning), #FF3D71);">📅</div>
-                    <div>
-                        <div class="card-title">Master Agenda & Task Checklist</div>
-                        <div class="card-subtitle">All critical time-blocks and staff actions for the day.</div>
-                    </div>
-                </div>
-                
-                <div style="overflow-x: auto;">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Activity</th>
-                                <th>Kyle (Scorekeeper)</th>
-                                <th>Jade (Cash/Ops)</th>
-                                <th>MC (Volker H)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td data-label="Time">08:30-09:00</td>
-                                <td data-label="Activity">Check-in</td>
-                                <td data-label="Kyle (Scorekeeper)">N/A</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">💰</span> Distribute $10K envelopes.</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time" class="critical-time">10:45-11:15</td>
-                                <td data-label="Activity" class="critical-time">List Review & Payout</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">📩</span> Log $1k / $0 / -$1k results from Mentors (LINE/Text).</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">📤</span> Collect/Pay List Penalties/Bonuses.</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time" class="critical-time">11:35-11:55</td>
-                                <td data-label="Activity" class="critical-time">Mentor Picks & Bids</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">📋</span> Finalize Gate-1 meeting list & room assignments.</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">📥</span> Collect Bid payments ($2k-$5k) from accepted teams.</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time">11:55-12:15</td>
-                                <td data-label="Activity">Overflow & Buyback</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">📝</span> Log draw assignments & final list.</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">💳</span> Collect $5k from Buyback team(s).</td>
-                                <td data-label="MC (Volker H)" class="task-detail"><span class="icon-small">🚨</span> Run Draw & **60-sec Buyback Countdown.**</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time">12:15-12:50</td>
-                                <td data-label="Activity">Gate-1 Meetings</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">📩</span> Log all "Interested" ($3k) or "Pass" ($0) results.</td>
-                                <td data-label="Jade (Cash/Ops)">N/A</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time" class="critical-time">12:50-13:50</td>
-                                <td data-label="Activity" class="critical-time">Lunch & CP1</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">📊</span> Post **LIVE Leaderboard.** Announce Top 3.</td>
-                                <td data-label="Jade (Cash/Ops)">N/A</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time">13:50-14:50</td>
-                                <td data-label="Activity">Gate-2 Meetings</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">🤫</span> Log all Strong/Decent/Weak payouts **privately.**</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">💳</span> Collect Gate-2 Entry Fee ($2k).</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time" class="critical-time">14:50-14:55</td>
-                                <td data-label="Activity" class="critical-time">G2 Results & G3 Selection</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">✅</span> Log 14 advancing teams & 6 eliminated teams.</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">💸</span> Pay all Gate-2 payouts ($8k/$5k/$0) immediately.</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time">15:00-15:20</td>
-                                <td data-label="Activity">Gate-3 Meetings</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">💰</span> Log all Deal/Conditional/No Deal ($15k/$10k/$0) results.</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">💳</span> Collect Gate-3 Entry Fee ($3k).</td>
-                                <td data-label="MC (Volker H)">N/A</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time">15:00-15:20</td>
-                                <td data-label="Activity">Hot Seat Challenge</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">🔥</span> Log $8k winner payout.</td>
-                                <td data-label="Jade (Cash/Ops)" class="task-detail"><span class="icon-small">💸</span> Pay $8k to Hot Seat Winner.</td>
-                                <td data-label="MC (Volker H)" class="task-detail"><span class="icon-small">⏱️</span> Host 30-sec pitch round.</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Time">15:20-15:30</td>
-                                <td data-label="Activity">Final Count & Awards</td>
-                                <td data-label="Kyle (Scorekeeper)" class="task-detail"><span class="icon-small">🏆</span> Verify Top 3 Cash Totals.</td>
-                                <td data-label="Jade (Cash/Ops)">N/A</td>
-                                <td data-label="MC (Volker H)" class="task-detail"><span class="icon-small">📢</span> Announce Winner & Awards.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 3: War Game Flow (Simple) -->
+        <!-- Tab 2: War Game Flow (Visualization) -->
         <div id="flow" class="tab-content">
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon" style="background: linear-gradient(135deg, #102C48, #FFB300);">🔄</div>
                     <div>
-                        <div class="card-title">War Game Flow & Capacity Overview</div>
-                        <div class="card-subtitle">Quick visualization of the funnel for all 20 teams.</div>
+                        <div class="card-title">War Game Flow & Staff Handoff Visualization</div>
+                        <div class="card-subtitle">Visualize the entire game structure and mandatory handoffs.</div>
                     </div>
                 </div>
                 
-                <div style="text-align: center; margin: 2rem 0;">
-                    <strong style="font-size: 1.5rem; color: var(--primary);">20 Startups Start</strong>
-                    <p style="margin-top: 1rem; color: var(--text-secondary);">↓</p>
-                    <div style="display: flex; justify-content: space-around; align-items: center; margin: 1rem 0;">
-                        <div class="task-list-box" style="width: 25%;">
-                            <strong style="color: var(--primary);">Gate 1 Capacity: 20 Slots</strong>
-                            <p>All teams get 10 mins. Decisions: Interested ($3k) or Pass ($0).</p>
+                <div class="staff-flow-container">
+                    <div style="text-align: center; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 800; color: var(--accent);">CRITICAL HANDOFF SEQUENCE</div>
+                    <div class="flow-grid-viz">
+                        
+                        <div class="flow-role-card" style="grid-area: 1 / 1;">
+                            <div class="flow-role-icon kyle">🛠️</div>
+                            <strong class="flow-role-title">KYLE (SCORE)</strong>
+                            <div class="flow-hand-off-line">Inputs: Mentor Text</div>
+                            <div class="flow-hand-off-line">Outputs: Live Leaderboard</div>
                         </div>
-                        <strong style="font-size: 2rem; color: var(--text-muted);">→</strong>
-                        <div class="task-list-box" style="width: 25%;">
-                            <strong style="color: var(--warning);">Gate 2 Capacity: 20 Slots</strong>
-                            <p>Teams pay $2k. Decisions: Strong/Decent/Weak.</p>
+                        <div class="flow-arrow-connector" style="grid-area: 1 / 2;">→</div>
+                        
+                        <div class="flow-role-card" style="grid-area: 1 / 3;">
+                            <div class="flow-role-icon jade">💰</div>
+                            <strong class="flow-role-title">JADE (CASH)</strong>
+                            <div class="flow-hand-off-line">Inputs: Kyle's Accepted List</div>
+                            <div class="flow-hand-off-line">Outputs: Startup Payments / Float</div>
                         </div>
-                        <strong style="font-size: 2rem; color: var(--text-muted);">→</strong>
-                        <div class="task-list-box" style="width: 25%;">
-                            <strong style="color: var(--success);">Gate 3 Capacity: 14 Slots</strong>
-                            <p>7 Mentors select Top 2. Decisions: Deal ($15k), Conditional ($10k), No Deal ($0).</p>
+                        <div class="flow-arrow-connector" style="grid-area: 1 / 4;">→</div>
+                        
+                        <div class="flow-role-card" style="grid-area: 1 / 5;">
+                            <div class="flow-role-icon mc">📢</div>
+                            <strong class="flow-role-title">MC (EVENTS)</strong>
+                            <div class="flow-hand-off-line">Inputs: Kyle's Final Score</div>
+                            <div class="flow-hand-off-line">Outputs: Buyback / G2 Announcement</div>
+                        </div>
+                        <div class="flow-arrow-connector" style="grid-area: 1 / 6;">→</div>
+
+                        <div class="flow-role-card" style="grid-area: 1 / 7;">
+                            <div class="flow-role-icon wing">📸</div>
+                            <strong class="flow-role-title">WING (MEDIA)</strong>
+                            <div class="flow-hand-off-line">Inputs: MC's Key Moments</div>
+                            <div class="flow-hand-off-line">Outputs: Final Assets / Narrative</div>
                         </div>
                     </div>
-                    <p style="margin-top: 1rem; color: var(--text-secondary);">↓</p>
-                    <strong style="font-size: 1.5rem; color: var(--accent);">6 Teams Eliminated (Eligible for Hot Seat $8k)</strong>
                 </div>
 
                 <div class="alert alert-danger" style="margin-top: 3rem;">
@@ -519,46 +523,73 @@
                 </div>
 
                 <div class="staff-grid-3" style="margin-bottom: 2rem;">
-                    <div class="task-list-box success">
+                    <div class="task-list-box" style="border-left-color: var(--primary);">
                         <strong>Scorekeeper (Kyle)</strong>
                         <p>Email: yh@mvl.biz</p>
                         <p>Role: Log ALL money movements, post leaderboard.</p>
                     </div>
-                    <div class="task-list-box accent">
+                    <div class="task-list-box" style="border-left-color: var(--accent);">
                         <strong>Operations (Jade)</strong>
                         <p>Email: jc@mvl.biz</p>
                         <p>Role: Handle ALL cash, G-Drive link sharing (LINE).</p>
                     </div>
-                    <div class="task-list-box warning">
+                    <div class="task-list-box" style="border-left-color: var(--warning);">
                         <strong>MC / Rules (Volker H)</strong>
                         <p>Email: vh@mvl.biz</p>
                         <p>Role: Time calls, rules clarification, run Draw/Buyback.</p>
+                    </div>
+                    <div class="task-list-box" style="border-left-color: #9C27B0;">
+                        <strong>Media (Wing)</strong>
+                        <p>Email: wing@mvl.biz</p>
+                        <p>Role: Capture critical moments (pitches, payouts, mentor feedback).</p>
                     </div>
                 </div>
 
                 <div class="task-list-box" style="margin-top: 2rem;">
                     <strong>Meeting Room Map</strong>
-                    <table class="cash-table">
-                        <thead>
-                            <tr>
-                                <th>Mentor</th>
-                                <th>Role</th>
-                                <th>Room</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Johnny Yu</td><td>CVC / Investment</td><td>Room A</td></tr>
-                            <tr><td>Dr. Volker Kaese</td><td>Supply Chain / Procurement</td><td>Room B</td></tr>
-                            <tr><td>Ashley Hsueh</td><td>Corporate Development / M&A</td><td>Room C</td></tr>
-                            <tr><td>Deborah Magid</td><td>Innovation Scout / POC</td><td>Room D</td></tr>
-                            <tr><td>Shafeen Charania</td><td>Operations / Technology Procurement</td><td>Room E</td></tr>
-                            <tr><td>Josh Fu</td><td>Partnerships / Channel Development</td><td>Room F</td></tr>
-                            <tr><td>Chander Kant</td><td>Technology Partnerships / Acquirer</td><td>Room G</td></tr>
-                        </tbody>
-                    </table>
+                    <div class="mentor-room-grid-container">
+                        <div class="mentor-room-grid">
+                            <div class="room-card">
+                                <div class="room-name">Room A</div>
+                                <div class="mentor-name-role">Johnny Yu</div>
+                                <div class="mentor-role-detail">CVC / Investment</div>
+                            </div>
+                            <div class="room-card">
+                                <div class="room-name">Room B</div>
+                                <div class="mentor-name-role">Dr. Volker Kaese</div>
+                                <div class="mentor-role-detail">Supply Chain / Procurement</div>
+                            </div>
+                            <div class="room-card">
+                                <div class="room-name">Room C</div>
+                                <div class="mentor-name-role">Ashley Hsueh</div>
+                                <div class="mentor-role-detail">Corporate Development / M&A</div>
+                            </div>
+                            <div class="room-card">
+                                <div class="room-name">Room D</div>
+                                <div class="mentor-name-role">Deborah Magid</div>
+                                <div class="mentor-role-detail">Innovation Scout / POC</div>
+                            </div>
+                            <div class="room-card">
+                                <div class="room-name">Room E</div>
+                                <div class="mentor-name-role">Shafeen Charania</div>
+                                <div class="mentor-role-detail">Operations / Tech Procurement</div>
+                            </div>
+                            <div class="room-card">
+                                <div class="room-name">Room F</div>
+                                <div class="mentor-name-role">Josh Fu (Logistics)</div>
+                                <div class="mentor-role-detail">Program Coordinator</div>
+                            </div>
+                            <div class="room-card">
+                                <div class="room-name">Room G</div>
+                                <div class="mentor-name-role">Chander Kant</div>
+                                <div class="mentor-role-detail">Technology Partnerships / Acquirer</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
     </main>
 
     <script>
@@ -570,53 +601,84 @@
                 icon: "📊",
                 color: "var(--primary)",
                 tasks: [
-                    { time: "10:45", desc: "List Review", type: "text", format: "TeamName - List Review - $1k" },
-                    { time: "12:15", desc: "Gate 1 Results", type: "text", format: "TeamName - Gate 1 - $3k" },
-                    { time: "13:50", desc: "War Room PM", type: "text", format: "TeamName - War Room - $2k" },
-                    { time: "14:50", desc: "Gate 2 Private Log", type: "text", format: "TeamName - Gate 2 - $8k" },
-                    { time: "15:00", desc: "Gate 3 Results", type: "text", format: "TeamName - Gate 3 - $15k" },
+                    { time: "08:30", event: "Setup & Tally", desc: "Set up the Google Sheet Live Tracker and Project it onto the wall (after CP1)." },
+                    { time: "10:45", event: "List Review", desc: "Log all List Review results (+$1K, $0, -$1K) from Mentors.", log_format: "TeamName - List Review - $1k" },
+                    { time: "11:55", event: "Overflow Draw", desc: "Log mentor assignments for all Overflow/Buyback teams.", log_format: "TeamName - Overflow Draw [Mentor/Room]" },
+                    { time: "12:15", event: "Gate 1 Results", desc: "Log all 'Interested' ($3K) or 'Pass' ($0) results.", log_format: "TeamName - Gate 1 - $3k" },
+                    { time: "12:50", event: "Checkpoint 1", desc: "Post LIVE Leaderboard. Announce Top 3." },
+                    { time: "13:50", event: "War Room Log", desc: "Log Ken Huang's War Room earnings for each team ($1K/$2K).", log_format: "TeamName - War Room - $2k" },
+                    { time: "14:50", event: "Gate 2 Private Log", desc: "Log all G2 ratings (Strong/$8K, Decent/$5K, Weak/$0) privately.", log_format: "TeamName - Gate 2 - $8k" },
+                    { time: "14:55", event: "G3 Selection Log", desc: "Verify 14 Advancing/6 Hot Seat. Log all payouts.", log_format: "ACTION: Verify 14 Advancing/6 Hot Seat. Log all payouts." },
+                    { time: "15:00", event: "Gate 3 Results", desc: "Log all final G3 results ($15K, $10K, $0).", log_format: "TeamName - Gate 3 - $15k" },
+                    { time: "15:20", event: "Final Tally", desc: "Verify Top 3 Totals. Declare Winner.", log_format: "ACTION: Verify Top 3 Totals. Declare Winner." }
                 ],
                 alerts: [
-                    { time: "12:50", desc: "CRITICAL: Post LIVE Leaderboard (CP1). Announce Top 3 scores." },
-                    { time: "14:55", desc: "ACTION: Verify 14 teams advanced to G3, 6 are Hot Seat eligible. Log all payouts. DO NOT ANNOUNCE G2 SCORES." }
+                    { time: "CRITICAL ALERT", desc: "Log ONLY the mentor's final decision (Interested/$3K, Strong/$8K, Deal/$15K). Do NOT try to reconcile cash, Jade handles the money." },
+                    { time: "14:50 PM", desc: "ACTION: You must log the G2 scores PRIVATELY before the mentor announces the G3 selection." }
                 ]
-            },
+            }
+            ,
             jade: {
                 name: "Jade",
                 title: "Operations / Cash Master Dashboard",
                 icon: "💰",
                 color: "var(--success)",
                 tasks: [
-                    { time: "08:30", desc: "Initial Bankroll", amount: "$10,000", flow: "P" },
-                    { time: "10:45", desc: "Customer List Penalty", amount: "-$1,000", flow: "C" },
-                    { time: "11:35", desc: "Gate 1 Bid Collection", amount: "-$2k to -$5k", flow: "C" },
-                    { time: "11:55", desc: "Gate 1 Buyback", amount: "-$5,000", flow: "C" },
-                    { time: "12:15", desc: "Gate 1 Payout", amount: "+$3,000", flow: "P" },
-                    { time: "13:50", desc: "Gate 2 Entry Fee", amount: "-$2,000", flow: "C" },
-                    { time: "14:55", desc: "Gate 2 Payout (Max)", amount: "+$8,000", flow: "P" },
-                    { time: "15:00", desc: "Gate 3 Entry Fee", amount: "-$3,000", flow: "C" },
-                    { time: "15:00", desc: "Hot Seat Payout", amount: "+$8,000", flow: "P" }
+                    { time: "08:30", event: "Initial Bankroll", desc: "Secure $270K total float. Distribute 20 x $10K envelopes.", flow: "C", amount: "SECURE $270K TOTAL FLOAT" },
+                    { time: "10:45", event: "List Penalty/Bonus", desc: "Collect/Pay List Penalties/Bonuses.", flow: "B", amount: "-$1K to +$1K" },
+                    { time: "11:35", event: "G1 Bid Collection", desc: "MUST CONFIRM with Kyle which teams were accepted and collect Bids ($2K-$5K).", flow: "C", amount: "-$2K to -$5K" },
+                    { time: "11:55", event: "G1 Buyback", desc: "Collect $5K from Buyback team(s).", flow: "C", amount: "-$5,000" },
+                    { time: "12:15", event: "G1 Payout", desc: "Pay all 'Interested' teams their +$3,000.", flow: "P", amount: "+$3,000" },
+                    { time: "13:50", event: "G2 Entry Fee", desc: "Collect Gate-2 Entry Fee ($2K) from all participating teams.", flow: "C", amount: "-$2,000" },
+                    { time: "14:55", event: "G2 Payouts", desc: "Pay all Gate-2 payouts ($8K, $5K, $0) immediately.", flow: "P", amount: "+$5K / +$8K (Immediate)" },
+                    { time: "15:00", event: "G3 Entry Fee", desc: "Collect Gate-3 Entry Fee ($3K) from all advancing teams.", flow: "C", amount: "-$3,000" },
+                    { time: "15:00", event: "Hot Seat Payout", desc: "Pay $8K to the Hot Seat Winner.", flow: "P", amount: "+$8,000" }
                 ],
                 alerts: [
-                    { time: "08:30", desc: "ACTION: Secure $270K total float. Distribute 20 x $10K envelopes." },
                     { time: "10:45", desc: "ACTION: Monitor LINE/G-Drive. Share review links with Mentors. Collect List Penalty / Pay List Bonus." },
-                    { time: "11:35", desc: "CRITICAL: MUST COLLECT Bid payments from accepted teams BEFORE 12:15." }
+                    { time: "11:35", desc: "CRITICAL: Must confirm with Kyle which teams were accepted to collect Bids BEFORE 12:15." },
+                    { time: "12:50", desc: "ACTION: Confirm final cash balance with Kyle BEFORE MC announces CP1." }
                 ]
-            },
+            }
+            ,
             mc: {
                 name: "MC (Volker H)",
                 title: "Logistics / Rules Command Post",
                 icon: "📢",
                 color: "var(--warning)",
                 tasks: [
-                    { name: "Buyback Countdown", desc: "Run 60-second public countdown for the $5,000 Buyback decision.", action_class: "critical" },
-                    { name: "Hot Seat Host", desc: "Gather 6 eliminated teams and run the 30-second pitch challenge for Ken Huang.", action_class: "info" },
-                    { name: "Gate 2 Announcement", desc: "Ensure Mentors gather teams at 14:50 to announce the final 2 advancing teams (and give feedback).", action_class: "critical" },
-                    { name: "Final Awards", desc: "Announce Winner, 2nd, 3rd place cash and consulting prizes.", action_class: "start" }
+                    { time: "09:00", event: "Opening Remarks", name: "Opening Remarks", desc: "Welcome, rules, goals." },
+                    { time: "11:30", event: "Auction Start", name: "Auction Start", desc: "Announce the start of the Auction (send ONE email to ONE mentor)." },
+                    { time: "11:55", event: "Buyback Countdown", name: "Buyback Countdown", desc: "Run 60-second public countdown for the $5,000 Buyback decision." },
+                    { time: "12:50", event: "CP1 Announcement", name: "CP1 Announcement", desc: "Announce live leaderboard and top 3 scores." },
+                    { time: "14:50", event: "G2 Announcement", name: "G2 Announcement", desc: "Ensure Mentors gather teams at 14:50 to announce the final 2 advancing teams." },
+                    { time: "15:00", event: "Hot Seat Host", name: "Hot Seat Host", desc: "Host 30-second pitch challenge for eliminated teams." },
+                    { time: "15:20", event: "Final Awards", name: "Final Awards", desc: "Announce Winner, 2nd, 3rd place cash and consulting prizes." }
                 ],
                 alerts: [
                     { time: "11:55", desc: "CRITICAL: Announce the number of remaining Gate 1 slots. Run the Overflow Draw, then the Buyback action." },
-                    { time: "All Day", desc: "RULE: Only Mentors can veto a team from the Overflow Draw, and only if the team is clearly outside their domain (e.g., B2C Mobile Game -> Supply Chain). Immediate redraw." }
+                    { time: "All Day", desc: "RULE: Only Mentors can veto a team from the Overflow Draw, and only if the team is clearly outside their domain. Immediate redraw." }
+                ]
+            }
+            ,
+            wing: {
+                name: "Wing",
+                title: "Media / Photography Dashboard",
+                icon: "📸",
+                color: "#9C27B0",
+                tasks: [
+                    { time: "08:30-09:00", event: "Check-in", desc: "Capture Check-in and initial $10K distribution (hands/faces)." },
+                    { time: "10:45-11:55", event: "Pre-Gate Intensity", desc: "Capture intensity: Teams building lists, mentors reviewing lists, teams drafting cold emails/bids (focus on concentration)." },
+                    { time: "12:15-12:50", event: "Gate 1 Meetings", desc: "Capture Gate 1 meetings: Mentors giving feedback/payouts (handshakes/cash)." },
+                    { time: "12:50-13:50", event: "CP1 Reveal", desc: "Capture CP1: Leaderboard reveal and teams huddled reviewing scores." },
+                    { time: "13:50-14:50", event: "Gate 2 / War Room", desc: "Capture Gate 2 meetings and War Room consulting (Ken Huang interactions)." },
+                    { time: "14:50-14:55", event: "G2 Results/Payouts", desc: "CRITICAL: Capture mentor delivering Gate 2 results/payouts (emotion/intensity)." },
+                    { time: "15:00-15:20", event: "Hot Seat/G3", desc: "Capture Hot Seat Challenge (focus on speaker and Ken's reaction) and Gate 3 negotiations." },
+                    { time: "15:20-15:30", event: "Final Awards", desc: "Capture Awards: Final winner announcement and prize presentation." }
+                ],
+                alerts: [
+                    { time: "Priority", desc: "Focus on capturing interactions (mentors/teams/cash) and strong emotion (relief, tension, celebration)." },
+                    { time: "Ethics", desc: "Respect mentor/team focus; do not interrupt private talks or stand directly behind the mentor/team during the actual meeting." }
                 ]
             }
         };
@@ -638,14 +700,79 @@
                     </div>
                 </div>
             `;
+            
+            // -------------------------------------------------------------------
+            // Custom Agenda Table (All Roles)
+            // -------------------------------------------------------------------
+            const tasksTable = `
+                <div class="card" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, var(--warning), var(--accent));">⏰</div>
+                        <div>
+                            <div class="card-title" style="color: var(--text-primary); -webkit-text-fill-color: var(--text-primary);">Role-Specific Daily Agenda</div>
+                            <div class="card-subtitle">Your exact tasks for each critical time slot.</div>
+                        </div>
+                    </div>
+                    <table class="custom-agenda-table">
+                        <thead>
+                            <tr>
+                                <th data-label="Time" class="time-col">Time</th>
+                                <th data-label="Event" style="width: 30%;">Event</th>
+                                <th data-label="Task">Your Task</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.tasks.map(task => `
+                                <tr>
+                                    <td data-label="Time" class="time-col ${task.time.includes('CRITICAL') || task.time.includes(':') ? 'critical-event' : ''}">${task.time}</td>
+                                    <td data-label="Event" class="task-col ${task.time.includes('CRITICAL') || task.time.includes(':') ? 'critical-event' : ''}">${task.event}</td>
+                                    <td data-label="Task" class="task-col ${task.time.includes('CRITICAL') || task.time.includes(':') ? 'critical-event' : ''}">${task.desc || task.log}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
 
             if (roleKey === 'kyle') {
                 contentHTML += `
-                    <div class="staff-grid-2">
-                        <div class="task-list-box warning">
-                            <strong>1. Log Format Cheat Sheet (Text Mentor's Response)</strong>
-                            <p style="margin-bottom: 0.5rem; color: var(--accent);">Log ALL decisions and money movements IMMEDIATELY. This is the official scoreboard source.</p>
-                            ${data.tasks.map(task => `<div class="task-log-item">${task.format}</div>`).join('')}
+                    ${tasksTable}
+                    <div class="staff-grid-2" style="margin-top: 2rem;">
+                        <div class="task-list-box warning" style="border-left-color: var(--primary);">
+                            <div class="log-sheet-header">SCOREBOARD LOG FORMAT TEMPLATE</div>
+                            <div style="background: var(--bg-card); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; padding: 1rem;">
+                                
+                                <div class="log-entry">
+                                    <div class="log-time">10:45</div>
+                                    <div class="log-format-text">TeamName - List Review - <strong class="cost-log">$1k</strong></div>
+                                    <div class="log-format-text">List Payout/Cost</div>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-time">12:00</div>
+                                    <div class="log-format-text">TeamName - Overflow Draw [Mentor/Room]</div>
+                                    <div class="log-format-text">Draw Assignment</div>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-time">12:35</div>
+                                    <div class="log-format-text">TeamName - Gate 1 - <strong class="payout">$3k</strong></div>
+                                    <div class="log-format-text">G1 Decision</div>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-time">13:50</div>
+                                    <div class="log-format-text">TeamName - War Room - <strong class="cost-log">$2k</strong></div>
+                                    <div class="log-format-text">War Room Spend</div>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-time">14:50</div>
+                                    <div class="log-format-text">TeamName - Gate 2 - <strong class="payout">$8k</strong></div>
+                                    <div class="log-format-text">G2 Private Rating</div>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-time">15:00</div>
+                                    <div class="log-format-text">TeamName - Gate 3 - <strong class="payout">$15k</strong></div>
+                                    <div class="log-format-text">G3 Final Deal</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="task-list-box success">
                             <strong>2. Critical Tracker Actions</strong>
@@ -655,28 +782,88 @@
                                     <p style="margin-top: 0.25rem; font-weight: 600;">${alert.desc}</p>
                                 </div>
                             `).join('')}
+                            <div style="margin-top: 1rem; border-top: 2px solid var(--success); padding-top: 1rem;">
+                                <strong style="color: var(--success); font-size: 1.1rem;">KEY INSTRUCTION:</strong>
+                                <p style="font-weight: 600;">Log ONLY the mentor's final decision (Interested/$3K, Strong/$8K, Deal/$15K). Do NOT try to reconcile cash, Jade handles the money.</p>
+                                <button class="action-button info" style="margin-top: 10px;">ACTION: Post LIVE Leaderboard at 12:50</button>
+                            </div>
                         </div>
                     </div>
                 `;
             } else if (roleKey === 'jade') {
                 contentHTML += `
-                    <div class="staff-grid-2">
-                        <div class="task-list-box success">
+                    ${tasksTable}
+                    <div class="staff-grid-2" style="margin-top: 2rem;">
+                        <div class="task-list-box success" style="border-left-color: var(--success);">
                             <strong>1. Cash Register Flow (Per Team Transaction)</strong>
-                            <table class="cash-table">
-                                <thead>
-                                    <tr><th>Time</th><th>Transaction</th><th>Amount</th></tr>
-                                </thead>
-                                <tbody>
-                                    ${data.tasks.map(task => `
+                            <div style="overflow-x: auto;">
+                                <table class="cash-flow-table">
+                                    <thead>
                                         <tr>
-                                            <td>${task.time}</td>
-                                            <td>${task.desc}</td>
-                                            <td class="${task.flow === 'C' ? 'cost' : 'payout'}">${task.amount}</td>
+                                            <th>Time</th>
+                                            <th>Transaction</th>
+                                            <th>Amount</th>
+                                            <th>Flow</th>
                                         </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="time-col">08:30</td>
+                                            <td class="transaction-col">Initial Bankroll</td>
+                                            <td class="amount-col payout">SECURE $270K TOTAL FLOAT</td>
+                                            <td class="flow-col payment">Float</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">10:45</td>
+                                            <td class="transaction-col">List Penalty/Bonus</td>
+                                            <td class="amount-col cost">-$1K to +$1K</td>
+                                            <td class="flow-col collection">Balanced</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">11:35</td>
+                                            <td class="transaction-col">G1 Bid Collection</td>
+                                            <td class="amount-col cost">-$2K to -$5K</td>
+                                            <td class="flow-col collection">Collection</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">11:55</td>
+                                            <td class="transaction-col">G1 Buyback</td>
+                                            <td class="amount-col cost">-$5,000</td>
+                                            <td class="flow-col collection">Collection</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">12:15</td>
+                                            <td class="transaction-col">G1 Payout</td>
+                                            <td class="amount-col payout">+$3,000</td>
+                                            <td class="flow-col payment">Payment</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">13:50</td>
+                                            <td class="transaction-col">G2 Entry Fee</td>
+                                            <td class="amount-col cost">-$2,000</td>
+                                            <td class="flow-col collection">Collection</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">14:55</td>
+                                            <td class="transaction-col">G2 Payouts</td>
+                                            <td class="amount-col payout">+$5K / +$8K</td>
+                                            <td class="flow-col payment">Payment</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">15:00</td>
+                                            <td class="transaction-col">G3 Entry Fee</td>
+                                            <td class="amount-col cost">-$3,000</td>
+                                            <td class="flow-col collection">Collection</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-col">15:00</td>
+                                            <td class="transaction-col">Hot Seat Payout</td>
+                                            <td class="amount-col payout">+$8,000</td>
+                                            <td class="flow-col payment">Payment</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="task-list-box accent">
                             <strong>2. Critical Ops Checklist</strong>
@@ -691,10 +878,11 @@
                 `;
             } else if (roleKey === 'mc') {
                 contentHTML += `
-                    <div class="staff-grid-2">
+                    ${tasksTable}
+                    <div class="staff-grid-2" style="margin-top: 2rem;">
                         <div class="task-list-box warning">
                             <strong>1. Critical Action Prompts (When to Speak)</strong>
-                            ${data.tasks.map(task => `
+                            ${data.tasks.filter(t => t.action_class).map(task => `
                                 <button class="action-button ${task.action_class}">${task.name.toUpperCase()}: ${task.desc}</button>
                             `).join('')}
                         </div>
@@ -704,6 +892,30 @@
                                 <strong style="color: var(--text-primary); font-size: 1.1rem;">Overflow/Buyback Flow:</strong>
                                 <p style="margin-top: 0.25rem; font-weight: 600;">(1) Announce # of remaining slots. (2) Run Overflow Draw. (3) Announce eliminated teams. (4) Run 60-sec countdown for $5k Buyback.</p>
                             </div>
+                            ${data.alerts.map(alert => `
+                                <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border);">
+                                    <strong style="color: var(--text-primary); font-size: 1.1rem;">${alert.time}</strong>
+                                    <p style="margin-top: 0.25rem; font-weight: 600;">${alert.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (roleKey === 'wing') {
+                 contentHTML += `
+                    ${tasksTable}
+                    <div class="staff-grid-2" style="margin-top: 2rem;">
+                        <div class="task-list-box" style="border-left-color: #9C27B0;">
+                            <strong>1. Photography Shot List (Mission-Critical Moments)</strong>
+                            <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">Your photos capture the narrative. Focus on intensity, emotion, and the cash exchange.</p>
+                            <ul style="list-style: none; padding: 0;">
+                                ${data.tasks.map(task => `
+                                    <li style="padding: 0.5rem 0; font-weight: 600;">[${task.time}] ${task.desc}</li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        <div class="task-list-box success">
+                            <strong>2. Media Capture Rules</strong>
                             ${data.alerts.map(alert => `
                                 <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border);">
                                     <strong style="color: var(--text-primary); font-size: 1.1rem;">${alert.time}</strong>
